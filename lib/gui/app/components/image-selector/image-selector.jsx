@@ -22,8 +22,6 @@ const propTypes = require('prop-types')
 
 const middleEllipsis = require('./../../utils/middle-ellipsis')
 
-const { Provider } = require('rendition')
-
 const shared = require('./../../../../shared/units')
 const {
   StepButton,
@@ -32,13 +30,31 @@ const {
   Footer,
   Underline,
   DetailsText,
-  ChangeButton
+  ChangeButton,
+  ThemedProvider
 } = require('./../../styled-components')
 
 const SelectImageButton = (props) => {
+  let buttonTemplate = (
+    <StepSelection>
+      <StepButton
+        onClick={props.openImageSelector}
+      >
+        Select image
+      </StepButton>
+      <Footer>
+        { props.mainSupportedExtensions.join(', ') }, and{' '}
+        <Underline
+          tooltip={ props.extraSupportedExtensions.join(', ') }
+        >
+          many more
+        </Underline>
+      </Footer>
+    </StepSelection>
+  )
   if (props.hasImage) {
-    return (
-      <Provider>
+    buttonTemplate = (
+      <ThemedProvider>
         <StepNameButton
           plain
           onClick={props.showSelectedImageDetails}
@@ -58,27 +74,13 @@ const SelectImageButton = (props) => {
             Change
           </ChangeButton>
         }
-      </Provider>
+      </ThemedProvider>
     )
   }
   return (
-    <Provider>
-      <StepSelection>
-        <StepButton
-          onClick={props.openImageSelector}
-        >
-          Select image
-        </StepButton>
-        <Footer>
-          { props.mainSupportedExtensions.join(', ') }, and{' '}
-          <Underline
-            tooltip={ props.extraSupportedExtensions.join(', ') }
-          >
-            many more
-          </Underline>
-        </Footer>
-      </StepSelection>
-    </Provider>
+    <ThemedProvider>
+      {buttonTemplate}
+    </ThemedProvider>
   )
 }
 
